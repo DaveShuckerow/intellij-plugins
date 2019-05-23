@@ -27,7 +27,7 @@ public class Angular2ApplicableDirectivesProvider {
   }
 
   public Angular2ApplicableDirectivesProvider(@NotNull XmlTag xmlTag, boolean onlyMatchingTagName) {
-    this(xmlTag.getProject(), xmlTag.getName(), onlyMatchingTagName,
+    this(xmlTag.getProject(), xmlTag.getLocalName(), onlyMatchingTagName,
          Angular2DirectiveSimpleSelector.createElementCssSelector(xmlTag));
   }
 
@@ -53,7 +53,7 @@ public class Angular2ApplicableDirectivesProvider {
     boolean isTemplateTag = isTemplateTag(tagName);
     Set<Angular2Directive> matchedDirectives = new HashSet<>();
     matcher.match(cssSelector, (selector, directive) -> {
-      if (!directive.isTemplate() || isTemplateTag) {
+      if (directive.isRegularDirective() || isTemplateTag) {
         matchedDirectives.add(directive);
       }
     });

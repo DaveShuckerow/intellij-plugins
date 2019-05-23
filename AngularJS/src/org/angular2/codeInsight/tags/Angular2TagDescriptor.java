@@ -1,6 +1,7 @@
 // Copyright 2000-2018 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package org.angular2.codeInsight.tags;
 
+import com.intellij.lang.javascript.psi.stubs.impl.JSImplicitElementImpl;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.html.dtd.HtmlNSDescriptorImpl;
 import com.intellij.psi.impl.source.xml.XmlDescriptorUtil;
@@ -25,15 +26,18 @@ import static org.angular2.codeInsight.tags.Angular2StandardTagDescriptor.mergeW
 public class Angular2TagDescriptor implements XmlElementDescriptor {
   private final String myName;
   private final Angular2XmlElementSourcesResolver myResolver;
-  private final boolean myHasAttributes;
+  private final boolean myImplied;
+
+  public Angular2TagDescriptor(@NotNull XmlTag tag) {
+    this(tag, true, Collections.singleton(createDirective(tag)));
+  }
 
   public Angular2TagDescriptor(@NotNull XmlTag tag,
-                               @NotNull String name,
-                               @NotNull Collection<?> sources,
-                               boolean hasAttributes) {
+                               boolean implied,
+                               @NotNull Collection<?> sources) {
+    myImplied = implied;
     myResolver = new Angular2XmlElementSourcesResolver(tag, sources);
-    myName = name;
-    myHasAttributes = hasAttributes;
+    myName = tag.getLocalName();
   }
 
   @NotNull
@@ -63,8 +67,7 @@ public class Angular2TagDescriptor implements XmlElementDescriptor {
   @Override
   @NotNull
   public XmlAttributeDescriptor[] getAttributesDescriptors(@Nullable XmlTag context) {
-    return myHasAttributes ? HtmlNSDescriptorImpl.getCommonAttributeDescriptors(context)
-                           : XmlAttributeDescriptor.EMPTY;
+    return HtmlNSDescriptorImpl.getCommonAttributeDescriptors(context);
   }
 
   @Nullable
@@ -126,5 +129,21 @@ public class Angular2TagDescriptor implements XmlElementDescriptor {
 
   @Override
   public void init(PsiElement element) {
+  }
+
+  public boolean allowContributions() {
+    return true;
+  }
+
+  public boolean isImplied() {
+    return myImplied;
+  }
+
+  @NotNull
+  private static JSImplicitElementImpl createDirective(@NotNull XmlTag xmlTag) {
+    //noinspection HardCodedStringLiteral
+    return new JSImplicitElementImpl.Builder(xmlTag.getLocalName(), xmlTag)
+      .setTypeString("E;;;")
+      .toImplicitElement();
   }
 }

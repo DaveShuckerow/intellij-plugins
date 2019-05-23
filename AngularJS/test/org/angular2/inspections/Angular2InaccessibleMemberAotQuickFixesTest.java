@@ -38,13 +38,17 @@ public class Angular2InaccessibleMemberAotQuickFixesTest extends Angular2MultiFi
     doMultiFileTest("private.html", "protected<caret>UsedSet");
   }
 
+  public void testPrivateConstructorFieldFix() {
+    doMultiFileTest("private.ts", "private<caret>Field");
+  }
+
   private void doMultiFileTest(String fileName, @NotNull String signature) {
     doTest((rootDir, rootAfter) -> {
       myFixture.enableInspections(AngularInaccessibleComponentMemberInAotModeInspection.class);
       myFixture.configureFromTempProjectFile(fileName);
       myFixture.setCaresAboutInjection(false);
       AngularTestUtil.moveToOffsetBySignature(signature, myFixture);
-      myFixture.launchAction(myFixture.findSingleIntention("Make accessible in AOT compilation mode"));
+      myFixture.launchAction(myFixture.findSingleIntention("Make public"));
     });
   }
 }

@@ -1,5 +1,6 @@
 <idea-plugin url="https://github.com/JetBrains/intellij-plugins/tree/master/AngularJS">
-  <name>AngularJS</name>
+  <id>AngularJS</id>
+  <name>Angular and AngularJS</name>
   <description><![CDATA[
 <p>Support for <a href="https://angular.io/">Angular</a> and <a href="https://angularjs.org/">AngularJS</a> projects.</p>
 <h2>Getting started</h2>
@@ -120,9 +121,6 @@
     <localInspection implementationClass="org.angular2.inspections.AngularIncorrectTemplateDefinitionInspection"
                      displayName="Incorrect component template definition"
                      groupName="Angular" enabledByDefault="true" level="ERROR" language="TypeScript"/>
-    <localInspection implementationClass="org.angular2.inspections.AngularInvalidSelectorInspection"
-                     displayName="Missing or invalid selector"
-                     groupName="Angular" enabledByDefault="true" level="ERROR" language="TypeScript"/>
     <localInspection implementationClass="org.angular2.inspections.AngularMissingOrInvalidDeclarationInModuleInspection"
                      displayName="Missing or invalid component, directive or pipe declaration in a module"
                      groupName="Angular" enabledByDefault="true" level="ERROR" language="TypeScript"/>
@@ -138,6 +136,9 @@
     <localInspection implementationClass="org.angular2.inspections.AngularInvalidEntryComponentInspection"
                      displayName="Invalid entry component"
                      groupName="Angular" enabledByDefault="true" level="ERROR" language="TypeScript"/>
+    <localInspection implementationClass="org.angular2.inspections.AngularInvalidSelectorInspection"
+                     displayName="Missing or invalid selector"
+                     groupName="Angular" enabledByDefault="true" level="ERROR"/>
     <localInspection implementationClass="org.angular2.inspections.AngularInaccessibleComponentMemberInAotModeInspection"
                      displayName="Inaccessible component member in AOT mode"
                      groupName="Angular" enabledByDefault="false" level="WARNING"/>
@@ -273,6 +274,7 @@
   <extensions defaultExtensionNs="org.angular2">
     <attributesProvider implementation="org.angular2.codeInsight.attributes.Angular2BoundHtmlAttributesProvider"/>
     <attributesProvider implementation="org.angular2.codeInsight.attributes.Angular2ExtendedKeyEventAttributesProvider"/>
+    <attributesProvider implementation="org.angular2.codeInsight.attributes.Angular2NgContentSelectorAttributesProvider"/>
     <attributesProvider implementation="org.angular2.codeInsight.attributes.Angular2BasicAttributesProvider" order="last"/>
 
     <contextProvider implementation="org.angular2.lang.Angular2PackageJsonContextProvider"/>
